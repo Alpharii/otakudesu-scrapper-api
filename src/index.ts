@@ -1,6 +1,11 @@
 import { app } from "./app";
+import { homeRoutes } from "./routes/home";
 
-app.get("/", () => "Hello Elysia")
+app.get("/", () => {
+  console.log('hitted')
+  return "hello elysia"
+})
+app.use(homeRoutes)
 
 app.listen(3000);
 
