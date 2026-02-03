@@ -1,13 +1,12 @@
 import { app } from "./app";
-import { homeRoutes } from "./routes/home";
+import { routes } from "./routes/routes";
 
-app.get("/", () => {
-  console.log('hitted')
-  return "hello elysia"
-})
-app.use(homeRoutes)
+app.use(routes)
 
 app.listen(3000);
+
+// debug
+app.routes.forEach(r => console.log(r.path));
 
 console.log(
   `🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`

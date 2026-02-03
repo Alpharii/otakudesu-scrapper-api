@@ -1,8 +1,8 @@
 import { load } from "cheerio";
 import { fetchUtils } from "../utils/fetch-util";
 
-export const homeController = async () => {
-    const html = await fetchUtils();
+export const home = async () => {
+    const html = await fetchUtils("/");
     const $ = load(html);
 
     const ongoing: any[] = [];
