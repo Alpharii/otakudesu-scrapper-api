@@ -1,6 +1,11 @@
 import Elysia from "elysia";
+import { routes } from "./routes/routes";
 
+export const api = new Elysia({
+  prefix: "/api",
+});
 
-export const app = new Elysia({
-    prefix: "/api",
-})
+api.use(routes);
+
+// debug route
+// api.routes.forEach(r => console.log("[API]", r.path));

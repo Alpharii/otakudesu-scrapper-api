@@ -49,7 +49,6 @@ export const detailEpisode = async (slug: string) => {
             .replace(":", "")
             .trim()
 
-            console.log('genre', label)
         if (label === "Genres") {
             const genres = $(el).find("a")
             .map((_, g) => $(g).text().trim())

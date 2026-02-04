@@ -21,8 +21,6 @@ export const detailAnime = async (slug: string) => {
     const html = await fetchUtils(`/anime/${slug}`)
     const $ = load(html)
 
-    console.log($.html())
-
     const title = $(".jdlrx h1").clone().children().remove().end().text().trim()
     const streaming_title = $(".subheading h2").text().trim()
     const thumbnail = $(".fotoanime img").first().attr("src") ?? ""

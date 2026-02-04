@@ -12,17 +12,15 @@ export const complete = async (page: string) => {
         const day = $(el).find(".epztipe").text().trim()
         const date = $(el).find(".newnime").text().trim()
 
-        const link =
-            $(el).find(".thumb a").attr("href") ?? ""
-
-        const thumbnail =
-            $(el).find("img").attr("src") ?? ""
+        const thumbnail = $(el).find("img").attr("src") ?? ""
+        const link = $(el).find(".thumb a").attr("href") ?? ""
+        const slug = link.replace(/^https:\/\/otakudesu\.[a-zA-Z0-9-]+\/anime\//, '').replace('/', '')
 
         if (!title) return
 
         results.push({
             title,
-            slug: link.replace(/^https:\/\/otakudesu\.[a-zA-Z0-9-]+\/anime\//, '').replace('/', ''),
+            slug,
             episode,
             day,
             date,

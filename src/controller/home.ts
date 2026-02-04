@@ -14,14 +14,15 @@ export const home = async () => {
         const date = $(el).find(".newnime").text().trim();
 
         const title = $(el).find(".jdlflm").text().trim();
-        const link = $(el).find(".thumb a").attr("href") ?? "";
         const thumbnail = $(el).find("img").attr("src") ?? "";
+        const link = $(el).find(".thumb a").attr("href") ?? "";
+        const slug = link.replace(/^https:\/\/otakudesu\.[a-zA-Z0-9-]+\/anime\//, '').replace('/', '')
 
         if (!title) return;
 
         const item = {
             title,
-            slug: link.replace(/^https:\/\/otakudesu\.[a-zA-Z0-9-]+\/anime\//, '').replace('/', ''),
+            slug,
             episodeInfo: epText,
             meta,
             date,

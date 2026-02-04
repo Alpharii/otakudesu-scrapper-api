@@ -1,13 +1,13 @@
-import { app } from "./app";
-import { routes } from "./routes/routes";
+import Elysia from "elysia";
+import { api } from "./app";
 
-app.use(routes)
+const app = new Elysia();
 
+app.get("/", () => 
+  "Rutenya ada di /api\n\nDokumentasi: https://github.com/Alpharii/otakudesu-scrapper-api"
+);
+
+app.use(api);
 app.listen(3000);
 
-// debug
-// app.routes.forEach(r => console.log(r.path));
-
-console.log(
-  `🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`
-);
+console.log(`Server berjalan di http://localhost:3000`);
