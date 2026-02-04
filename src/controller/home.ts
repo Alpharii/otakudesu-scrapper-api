@@ -21,6 +21,7 @@ export const home = async () => {
 
         const item = {
             title,
+            slug: link.replace(/^https:\/\/otakudesu\.[a-zA-Z0-9-]+\/anime\//, '').replace('/', ''),
             episodeInfo: epText,
             meta,
             date,

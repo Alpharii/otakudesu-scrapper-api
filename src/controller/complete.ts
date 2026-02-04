@@ -1,7 +1,7 @@
 import { load } from "cheerio"
 import { fetchUtils } from "../utils/fetch-util"
 
-export const complete = async (page: string = "1") => {
+export const complete = async (page: string) => {
     const html = await fetchUtils(`/complete-anime/page/${page}`)
     const $ = load(html)
     const results: any[] = []
@@ -22,6 +22,7 @@ export const complete = async (page: string = "1") => {
 
         results.push({
             title,
+            slug: link.replace(/^https:\/\/otakudesu\.[a-zA-Z0-9-]+\/anime\//, '').replace('/', ''),
             episode,
             day,
             date,
