@@ -6,7 +6,6 @@ import { detailAnime } from "../controller/detail-anime";
 import { detailEpisode } from "../controller/detail-episode";
 import { search } from "../controller/search";
 
-
 export const routes = new Elysia()
     .get("/", home)
     .get("/ongoing/:page", ({params: {page}}) => ongoing(page))
