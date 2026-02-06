@@ -2,6 +2,7 @@
 
 .env
 test.html
+dist
 
 # dependencies
 /node_modules
