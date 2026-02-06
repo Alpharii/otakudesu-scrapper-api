@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { api } from "./app";
+import { api } from "./app.js";
 
 export default new Elysia()
   .get("/", () => 

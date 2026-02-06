@@ -1,5 +1,5 @@
 import { load } from "cheerio"
-import { fetchUtils } from "../utils/fetch-util"
+import { fetchUtils } from "../utils/fetch-util.js"
 
 type Mirror = {
     quality: string

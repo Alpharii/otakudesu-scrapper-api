@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import { routes } from "./routes/routes";
+import { routes } from "./routes/routes.js";
 
 export const api = new Elysia({
   prefix: "/api",

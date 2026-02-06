@@ -1,5 +1,5 @@
 import { load } from "cheerio"
-import { fetchUtils } from "../utils/fetch-util"
+import { fetchUtils } from "../utils/fetch-util.js"
 
 export const search = async (query: string) => {
     const html = await fetchUtils(`/?s=${query}&post_type=anime`)

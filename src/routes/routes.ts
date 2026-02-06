@@ -1,10 +1,10 @@
 import Elysia from "elysia";
-import { home } from "../controller/home";
-import { ongoing } from "../controller/ongoing";
-import { complete } from "../controller/complete";
-import { detailAnime } from "../controller/detail-anime";
-import { detailEpisode } from "../controller/detail-episode";
-import { search } from "../controller/search";
+import { home } from "../controller/home.js";
+import { ongoing } from "../controller/ongoing.js";
+import { complete } from "../controller/complete.js";
+import { detailAnime } from "../controller/detail-anime.js";
+import { detailEpisode } from "../controller/detail-episode.js";
+import { search } from "../controller/search.js";
 
 export const routes = new Elysia()
     .get("/", home)
