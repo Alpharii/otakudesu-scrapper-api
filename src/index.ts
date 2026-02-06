@@ -1,14 +1,13 @@
 import Elysia from "elysia";
-import { routes } from "./routes/routes.js";
+import { api } from "./app";
 
-const api = new Elysia({
-  prefix: "/api",
-}).use(routes);
+const app = new Elysia();
 
-const app = new Elysia()
-  .get("/", () =>
-    "Rutenya ada di /api\n\nDokumentasi: https://github.com/Alpharii/otakudesu-scrapper-api"
-  )
-  .use(api);
+app.get("/", () => 
+  "Rutenya ada di /api\n\nDokumentasi: https://github.com/Alpharii/otakudesu-scrapper-api"
+);
 
-export default app.fetch;
+app.use(api);
+app.listen(3000);
+
+console.log(`Server berjalan di http://localhost:3000`);
