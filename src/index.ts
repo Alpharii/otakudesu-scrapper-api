@@ -1,10 +1,14 @@
 import Elysia from "elysia";
-import { api } from "./app.js";
+import { routes } from "./routes/routes.js";
+
+const api = new Elysia({
+  prefix: "/api",
+}).use(routes);
 
 const app = new Elysia()
-  .get("/", () => 
-  "Rutenya ada di /api\n\nDokumentasi: https://github.com/Alpharii/otakudesu-scrapper-api"
+  .get("/", () =>
+    "Rutenya ada di /api\n\nDokumentasi: https://github.com/Alpharii/otakudesu-scrapper-api"
   )
-  .use(api)
+  .use(api);
 
 export default app.fetch;
