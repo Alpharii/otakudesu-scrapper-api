@@ -40,6 +40,9 @@ export const detailEpisode = async (slug: string) => {
     //info
     const info: Record<string, any> = {}
 
+    const thumbnail = $(".cukder").find("img").attr("src") ?? null
+    info.thumbnail = thumbnail
+
     $(".infozingle p").each((_, el) => {
 
         const label = $(el).find("b").text().replace(":", "").trim()

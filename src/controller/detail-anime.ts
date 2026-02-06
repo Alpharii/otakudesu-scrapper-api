@@ -15,6 +15,14 @@ type AnimeDetail = {
     synopsis: string
     info: Record<string, string | string[]>
     episodes: Episode[]
+    rekomendasi: RecommendedAnime[]
+}
+
+type RecommendedAnime = {
+    title: string
+    link: string
+    slug: string
+    thumbnail: string
 }
 
 export const detailAnime = async (slug: string) => {
@@ -70,13 +78,43 @@ export const detailAnime = async (slug: string) => {
         })
     })
 
+    const rekomendasi: RecommendedAnime[] = []
+
+    $(".isi-recommend-anime-series .isi-konten").each((_, el) => {
+
+        const anchor = $(el).find(".isi-anime a").first()
+
+        const title = $(el)
+            .find(".judul-anime a")
+            .text()
+            .trim()
+
+        const link = anchor.attr("href") ?? ""
+
+        const slug = link
+            .replace(/^https:\/\/otakudesu\.[a-zA-Z0-9-]+\/anime\//, "")
+            .replace(/\/$/, "")
+
+        const thumbnail = $(el)
+            .find("img")
+            .attr("src") ?? ""
+
+        rekomendasi.push({
+            title,
+            link,
+            slug,
+            thumbnail
+        })
+    })
+
     const result: AnimeDetail = {
         title,
         streaming_title,
         thumbnail,
         synopsis,
         info,
-        episodes
+        episodes,
+        rekomendasi,
     }
 
     return {
