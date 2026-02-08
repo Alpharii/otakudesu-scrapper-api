@@ -1,12 +1,13 @@
 import { load } from "cheerio"
 import { fetchUtils } from "../utils/fetch-util.js"
+import axios from "axios"
 
 type Mirror = {
     quality: string
     provider: string
     token: string
+    url?: string | null
 }
-
 type DownloadProvider = {
     provider: string
     url: string
@@ -30,6 +31,7 @@ const extractSlug = (url?: string | null) => {
 export const detailEpisode = async (slug: string) => {
     const html = await fetchUtils(`/episode/${slug}`)
     const $ = load(html)
+    console.log($.html())
     const title = $(".posttl").text().trim()
 
     const metadata = {
@@ -125,25 +127,6 @@ export const detailEpisode = async (slug: string) => {
         })
     })
 
-    const mirrors: Mirror[] = []
-
-    $(".mirrorstream ul").each((_, ul) => {
-
-        const quality =
-            $(ul).find("span").parent().text()
-                .replace(/Mirror/i, "")
-                .trim()
-
-        $(ul).find("li a").each((_, a) => {
-
-            mirrors.push({
-                quality,
-                provider: $(a).text().trim(),
-                token: $(a).attr("data-content") ?? ""
-            })
-        })
-    })
-
     const downloads: Download[] = []
 
     $(".download ul li").each((_, li) => {
@@ -165,6 +148,106 @@ export const detailEpisode = async (slug: string) => {
         })
     })
 
+    const AJAX_URL = "https://otakudesu.best/wp-admin/admin-ajax.php"
+    const mirrors: Mirror[] = []
+
+    let nonceCache: string | null = null
+
+    const referer =
+        `https://otakudesu.best/episode/${slug}`
+
+    const getNonce = async () => {
+
+        if (nonceCache) return nonceCache
+
+        const res = await axios.post(AJAX_URL, 
+            new URLSearchParams({
+                action: "aa1208d27f29ca340c92c66d1926f13f"
+            })
+        )
+
+        const json = await res.data
+
+        nonceCache = json.data
+        return nonceCache
+    }
+
+    const resolveMirror = async (token: string) => {
+
+        try {
+
+            const payload = JSON.parse(
+                Buffer.from(token, "base64").toString()
+            )
+
+            const nonce = await getNonce()
+
+            const res = await axios.post(AJAX_URL, 
+                new URLSearchParams({
+                    ...payload,
+                    nonce,
+                    action:
+                    "2a3505c93b0035d3f455df82bf976b84"
+                })
+            )
+
+            const json = await res.data
+
+            const iframeHtml =
+                Buffer.from(json.data, "base64")
+                .toString()
+
+            const $$ = load(iframeHtml)
+
+            return $$("iframe").attr("src") ?? null
+
+        }
+        catch {
+            return null
+        }
+    }
+
+    $(".mirrorstream ul").each((_, ul) => {
+
+        $(ul).find("li a").each((_, a) => {
+
+            const token = $(a).attr("data-content")
+            if (!token) return
+
+            let quality = ""
+
+            try {
+
+                const payload = JSON.parse(
+                    Buffer.from(token, "base64").toString()
+                )
+
+                quality = payload.q ?? ""
+
+            } catch {}
+
+            mirrors.push({
+                quality,
+                provider: $(a).text().trim(),
+                token
+            })
+        })
+    })
+
+    await Promise.all(
+        mirrors.map(async (mirror) => {
+
+            mirror.url =
+                await resolveMirror(
+                    mirror.token
+                )
+
+        })
+    )
+
+    const aliveMirrors =
+        mirrors.filter(m => m.url)
+
     return {
         success: true,
         data: {
@@ -174,7 +257,7 @@ export const detailEpisode = async (slug: string) => {
             iframe,
             navigation,
             episodes,
-            mirrors,
+            mirrors: aliveMirrors,
             downloads
         }
     }
